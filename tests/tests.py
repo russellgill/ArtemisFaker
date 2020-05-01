@@ -52,11 +52,46 @@ class TestModelInterfaceLayer(unittest.TestCase):
 
         results_no_params = test_instance_no_param.generate_random()
         results_params = test_instance_param.generate_random()
+        assert isinstance(results_params, float)
+        assert isinstance(results_no_params, float)
+
+    def test_MIL_gen_rand(self):
+        """
+        Verify that the modules
+        can load and generate
+        randoms.
+
+        THIS TEST FAILS
+        """
+        entry = "scipy"
+        # test without params
+        test_instance_no_param = mil.ModelInterface(engine=entry, params=False)
+        test_instance_param = mil.ModelInterface(
+            engine=entry, params=[9, 1])
+
+        test_instance_no_param.scipy_generator("normal")
+        test_instance_param.scipy_generator("normal")
+
+        results_no_params = test_instance_no_param.generate_random_scipy()
+        results_params = test_instance_param.generate_random_scipy()
+
         print(results_no_params)
         print(results_params)
         assert isinstance(results_params, float)
         assert isinstance(results_no_params, float)
 
+
+class TestStatisticalModelInterfaceLayer(unittest.TestCase):
+
+    def test_set_seed(self):
+        abstract = smt.AbstractModel()
+        abstract.set_seed(seed=1111)
+
+        model_function = lambda x: 
+
+
+    def test_create_method(self):
+        pass
 
 if __name__ == "__main__":
     unittest.main()
