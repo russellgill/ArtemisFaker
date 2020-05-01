@@ -64,13 +64,13 @@ the old generator method.
 class ODProviderFactory(FakerRelicShimFactory):
 
     def __init__(self, ClassName, ProviderName, GeneratableNames, DatumSchema, UseFaker=True, GeneratorDicts=None):
-	if UseFaker is True:
-		super().__init__(ClassName, ProviderName, GeneratableNames)
-		self.generators = super().return_available_generatables()
-        self.available_methods = {}
-    elif UseFaker is False:
-        self.available_methods = GeneratorDicts
-    self.schema = DatumSchema
+        if UseFaker is True:
+            super().__init__(ClassName, ProviderName, GeneratableNames)
+            self.generators = super().return_available_generatables()
+            self.available_methods = {}
+        elif UseFaker is False:
+            self.available_methods = GeneratorDicts
+        self.schema = DatumSchema
 
     def produce_available_methods(self, GeneratorList):
         """
