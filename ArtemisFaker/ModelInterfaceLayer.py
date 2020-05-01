@@ -29,7 +29,6 @@ class ModelInterface():
         if params:
             self.params = params
 
-
     def custom_generator(self, method):
         """
         Method allowing importing external
@@ -75,7 +74,7 @@ class ModelInterface():
         model = self.generator
         params = self.params
         if params:
-            return model(params)
+            return model(*params)
         else:
             return model()
 
@@ -95,10 +94,11 @@ class ModelInterface():
             seed_setter(self.seed)
 
         # Now instantiate the generator
-        generator = getattr(model, method)
+        self.generator = getattr(model, method)
 
+    def generate_random_scipy(self):
         # Call generator with
         if self.params:
-            return generator().rvs(self.params)
+            return generator().rvs(*self.params)
         elif not self.params:
             return generator().rvs()
