@@ -1,6 +1,7 @@
 from ArtemisFaker import StatisticalModelTemplate as smt
 from ArtemisFaker import ModelInterfaceLayer as mil
 from ArtemisFaker import FakerModelInterfaceLayer as fmil
+import importlib as ipl
 import unittest
 import sys
 
@@ -15,6 +16,23 @@ class TestModelInterfaceLayer(unittest.TestCase):
         test_instance.numpy_generator("get_state")
         seed_actual = test_instance.generate_random()
         assert(seed_actual[1][0] == test_seed)
+    
+    def test_MIL_engine(self):
+        """
+        Verify that engine can be loaded.
+        """
+        test_module = "numpy"
+        test_instance = mil.ModelInterface(engine=test_module)
+        module = test_instance.model
+        assert(ipl.import_module(test_module) == module)
+
+    def test_MIL_params(self):
+        """
+        Verify that the params can get loaded in.
+        """
+        test_params = [1, 2, 3]
+        test_instance = mil.ModelInterface(params=test_params)
+        assert(test_instance.params == test_params)
 
 if __name__ == "__main__":
     unittest.main()

@@ -19,17 +19,17 @@ import importlib as ipl
 
 class ModelInterface():
 
-    def __init__(self, seed=False, model=None, engine=None, params=False, isDefault=False):
-        self.isDefault = isDefault
+    def __init__(self, seed=False, engine=None, params=False):
         self.params = params
         self.engine = engine
         self.seed = seed
         if self.engine is not None:
             if engine.lower() != "scipy" or not seed:
-                self.model = ipl.import_module(model)
+                self.model = ipl.import_module(engine)
         if params:
             self.params = params
-    
+
+
     def custom_generator(self, method):
         """
         Method allowing importing external
