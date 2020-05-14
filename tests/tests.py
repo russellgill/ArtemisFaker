@@ -114,11 +114,12 @@ class TestStatisticalModelInterfaceLayer(unittest.TestCase):
 
     def test_create_method(self):
         
+        seed = 1111
         method = "sample_method"
 
         class SampleMethod:
 
-            def seed(self):
+            def seed(self, seedval):
                 pass
 
             def sample_method(self):
@@ -126,7 +127,7 @@ class TestStatisticalModelInterfaceLayer(unittest.TestCase):
         model = SampleMethod()
         
         absmod = AbstractModel(model, seed=seed, imported=False)
-        absmod.create_instance()
+        absmod.create_instance("sample_method")
     
 
 if __name__ == "__main__":
