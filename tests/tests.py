@@ -16,6 +16,7 @@ limitations under the License.
 """
 
 from ArtemisFaker import StatisticalModelTemplate as smt
+from ArtemisFaker.StatisticalModelTemplate import AbstractModel
 from ArtemisFaker import ModelInterfaceLayer as mil
 from ArtemisFaker import FakerModelInterfaceLayer as fmil
 import importlib as ipl
@@ -101,14 +102,32 @@ class TestModelInterfaceLayer(unittest.TestCase):
 class TestStatisticalModelInterfaceLayer(unittest.TestCase):
 
     def test_set_seed(self):
-        abstract = smt.AbstractModel()
-        abstract.set_seed(seed=1111)
+        model = "numpy.random"
+        seed = 1111
+        method = "get_state"
 
-        model_function = lambda x: 
+        absmod = AbstractModel(model, seed=seed)
+        absmod.create_instance(method)
+        result = absmod.generate_random()
+        assert(result[1][0] == seed)
 
 
     def test_create_method(self):
-        pass
+        
+        method = "sample_method"
+
+        class SampleMethod:
+
+            def seed(self):
+                pass
+
+            def sample_method(self):
+                pass
+        model = SampleMethod()
+        
+        absmod = AbstractModel(model, seed=seed, imported=False)
+        absmod.create_instance()
+    
 
 if __name__ == "__main__":
     unittest.main()

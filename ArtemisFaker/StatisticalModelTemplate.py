@@ -16,29 +16,32 @@ limitations under the License.
 """
 
 import importlib as ipl
+from inspect import signature
 
 class AbstractModel():
 
-    def __init__(self):
-        pass
-
-    def set_seed(self, seed):
-        """
-        Method for setting seeds.
-        """
-        seed = ipl.import_module("numpy.random")
-        self.set_seed = getattr(self.model, "set_seed")
-        self.set_seed(self.seed)
-    
-    def generator(self, method, params=False):
-        """
-        Method for configuring the seeds
-        for a system.
-        """
-        if self.seed:
-            seed = self.set_seed()
-        # Inject methods or processes here.
-        if params:
-            return method(params)
+    def __init__(self, model: object, seed=False, imported=True):
+        if imported:
+            self.model = ipl.import_module(model)
         else:
-            return method()
+            self.model = model
+        if (seed):
+            self.seed = seed
+        
+    def create_instance(self, method):
+        if self.seed:
+            # Now set the seed
+            seed_setter = getattr(self.model, "seed")
+            seed_setter(self.seed)
+        self.method = getattr(self.model, method)
+    
+    def generate_random(self, params=False):
+        if params:
+            return self.method(*params)
+        else:
+            return self.method()
+        
+
+
+
+
