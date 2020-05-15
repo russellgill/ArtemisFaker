@@ -144,7 +144,17 @@ class TestStatisticalModelInterfaceLayer(unittest.TestCase):
         
         absmod = AbstractModel(model, seed=seed, imported=False)
         absmod.create_instance("sample_method")
-    
+
+class TestFakerModelInterfaceLayer(unittest.TestCase):
+
+    def test_generator(self):
+        generatable_names = ["first_names_female", "last_names"]
+        class_name = "people.py"
+        method = "Provider"
+        fmil = fmil(class_name, method, generatable_names)
+        fmil.return_available_generatables()
+        
+
 
 if __name__ == "__main__":
     unittest.main()
