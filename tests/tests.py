@@ -59,19 +59,31 @@ class TestModelInterfaceLayer(unittest.TestCase):
         can load and generate
         randoms.
         """
-        entry = "numpy"
-        # test without params
-        test_instance_no_param = mil.ModelInterface(engine=entry, params=False)
-        test_instance_param = mil.ModelInterface(
-            engine=entry, params=[9, 1])
+        engine = "scipy.stats"
+        method = "uniform"
+        seed = 1111
+        params = [3, 3]
 
-        test_instance_no_param.numpy_generator("uniform")
-        test_instance_param.numpy_generator("uniform")
+        numpy = ipl.import_module("numpy.random")
+        numpy.seed(seed)
+
+        test_result = numpy.uniform(params)
+        
+        del numpy 
+
+        # test without params
+        test_instance_no_param = mil.ModelInterface(engine=engine, params=False)
+        test_instance_param = mil.ModelInterface(
+            engine=engine, params=params)
+
+        test_instance_no_param.numpy_generator(method)
+        test_instance_param.numpy_generator(method)
 
         results_no_params = test_instance_no_param.generate_random()
         results_params = test_instance_param.generate_random()
         assert isinstance(results_params, float)
         assert isinstance(results_no_params, float)
+        assert (results_params == test_result)
 
     def test_MIL_gen_rand(self):
         """
