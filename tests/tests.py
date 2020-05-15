@@ -18,7 +18,8 @@ limitations under the License.
 from ArtemisFaker import StatisticalModelTemplate as smt
 from ArtemisFaker.StatisticalModelTemplate import AbstractModel
 from ArtemisFaker import ModelInterfaceLayer as mil
-from ArtemisFaker import FakerModelInterfaceLayer as fmil
+from ArtemisFaker import FakerModelInterfaceLayer.FakerRelicShimFactory as fmil
+from ArtemisFaker import FakerModelInterfaceLayer.ODProviderFactory as fmil
 import importlib as ipl
 import unittest
 import sys
@@ -147,15 +148,14 @@ class TestStatisticalModelInterfaceLayer(unittest.TestCase):
 
 class TestFakerModelInterfaceLayer(unittest.TestCase):
 
+
     def test_generator_factory(self):
         generatable_names = ["first_names_female", "last_names"]
         class_name = "people.py"
         method = "Provider"
-        fmil_obj = fmil(class_name, method, generatable_names)
-        output_check = fmil_obj.return_available_generatables()
-        assert(len(output_check) == len(generatable_names))
-        
-
+        self.fmil_obj = fmil(class_name, method, generatable_names)
+        self.output_check = self.fmil_obj.return_available_generatables()
+        assert(len(self.output_check) == len(generatable_names))
 
 if __name__ == "__main__":
     unittest.main()
