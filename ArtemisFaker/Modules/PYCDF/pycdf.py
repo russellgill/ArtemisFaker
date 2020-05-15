@@ -39,7 +39,7 @@ def binary(y_data: list, point: int, xdata: list):
                 
     last = len(y_data) - 1
     found = False
-    
+    step = 0
     while not found:
         if (step + 1) < len(y_data):
             mid = (first + last) // 2
@@ -55,6 +55,7 @@ def binary(y_data: list, point: int, xdata: list):
             raise IndexError("Iterations exceed total list size. \
                               Either the point does not exist, \
                               or the array is not normalized")
+        step += 1
 
 def interp(point: float, ui: float, uj: float, xi: float, xj: float) -> float:
     
@@ -62,24 +63,3 @@ def interp(point: float, ui: float, uj: float, xi: float, xj: float) -> float:
     b = ((point - ui) / (uj - ui)) * xj
     
     return a + b
-
-def execute(self, sample_y, edges):
-    found_x = []     
-    for y in sample_y:
-        result = binary(normed, y, edges[1:])
-        found_x.append(result)
-
-    i = 0
-    interpolated = []
-    for dicts in found_x:
-        y_vals = []
-        x_vals = []
-        for x, y in dicts.items():
-            x_vals.append(x)
-            y_vals.append(y)
-            # point: float, ui: float, uj: float, xi: float, xj: float
-        result = interp(sample_y[i], y_vals[0], y_vals[1], x_vals[0], x_vals[1])
-        interpolated.append(result)
-        i += 1
-
-    return np.histogram(interpolated)

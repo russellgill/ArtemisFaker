@@ -24,7 +24,7 @@ name, as well as the 'live' method.
 """
 class FakerRelicShimFactory():
 
-    def __init__(self,ClassName, ProviderName, GeneratableNames):
+    def __init__(self, ClassName, ProviderName, GeneratableNames):
         self.orderedDicts = []
         self.methods = {}
         self.generatableNames = GeneratableNames
