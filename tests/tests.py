@@ -15,10 +15,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from ArtemisFaker import StatisticalModelTemplate as smt
-from ArtemisFaker.StatisticalModelTemplate import AbstractModel
-from ArtemisFaker import ModelInterfaceLayer as mil
-from ArtemisFaker import FakerModelInterfaceLayer as fmil
+from ../ArtemisFaker import StatisticalModelTemplate as smt
+from ../ArtemisFaker.StatisticalModelTemplate import AbstractModel
+from ../ArtemisFaker import ModelInterfaceLayer as mil
+from ../ArtemisFaker import FakerModelInterfaceLayer as fmil
 import importlib as ipl
 import unittest
 import sys
