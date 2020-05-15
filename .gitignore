@@ -1,2 +1,2 @@
 .vscode
-ArtemisFaker/IO/proto/
+*.proto
