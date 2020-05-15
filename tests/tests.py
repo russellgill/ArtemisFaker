@@ -151,8 +151,8 @@ class TestFakerModelInterfaceLayer(unittest.TestCase):
         generatable_names = ["first_names_female", "last_names"]
         class_name = "people.py"
         method = "Provider"
-        fmil = fmil(class_name, method, generatable_names)
-        fmil.return_available_generatables()
+        fmil_obj = fmil(class_name, method, generatable_names)
+        fmil_obj.return_available_generatables()
         
 
 
