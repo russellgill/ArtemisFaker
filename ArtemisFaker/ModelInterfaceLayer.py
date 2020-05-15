@@ -21,10 +21,9 @@ class ModelInterface():
 
     def __init__(self, seed=False, engine=None, params=False):
         self.params = params
-        self.engine = engine
         self.seed = seed
-        if self.engine is not None:
-            if engine.lower() != "scipy" or not seed:
+        if (engine is not None):
+            if (engine.lower() != "scipy") and (not seed):
                 self.model = ipl.import_module(engine)
             else:
                 self.model = engine
@@ -87,7 +86,7 @@ class ModelInterface():
         May also be seeded.
         """
         # Instantiate the model
-        model = ipl.import_module(self.model)
+        model = ipl.import_module(self.model) # There is an error in here. Walk through with a debugger.
         # Instantiate a numpy instance in the same scope
         if self.seed:
             rng = ipl.import_module("numpy.random")
