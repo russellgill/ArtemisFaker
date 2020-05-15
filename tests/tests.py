@@ -150,8 +150,8 @@ class TestFakerModelInterfaceLayer(unittest.TestCase):
 
     def test_generator_factory(self):
         generatable_names = ["first_names_female", "last_names"]
-        class_name = "people.py"
-        method = "Provider"
+        class_name = "Provider"
+        method = "people"
         self.fmil_obj = fmil.FakerRelicShimFactory(class_name, method, generatable_names)
         self.output_check = self.fmil_obj.return_available_generatables()
         assert(len(self.output_check) == len(generatable_names))
