@@ -1,4 +1,4 @@
-class Provider(PersonProvider):
+class Provider():
     formats_female = OrderedDict((
         ('{{first_name_female}} {{last_name}}', 0.97),
         ('{{prefix_female}} {{first_name_female}} {{last_name}}', 0.015),
