@@ -65,7 +65,6 @@ to provide access to the ordered dicts within
 the old generator method.
 """
 
-
 class ODProviderFactory(FakerRelicShimFactory):
 
     def __init__(self, ConfigProto, UseFaker=True, GeneratorDicts=None):
