@@ -23,7 +23,7 @@ class ModelInterface():
         self.params = params
         self.seed = seed
         if (engine is not None):
-            if (engine.lower() != "scipy") and (not seed):
+            if ("scipy" not in engine.lower()) and (not seed):
                 self.model = ipl.import_module(engine)
             else:
                 self.model = engine
@@ -97,9 +97,15 @@ class ModelInterface():
         # Now instantiate the generator
         self.generator = getattr(model, method)
 
-    def generate_random_scipy(self):
+    def generate_random_scipy(self, rvs=False):
         # Call generator with
         if self.params:
-            return self.generator().rvs(*self.params)
+            if rvs:
+                return self.generator(*self.params).rvs()
+            else:
+                return self.generator(*self.params)
         elif not self.params:
-            return self.generator().rvs()
+            if rvs:
+                return self.generator().rvs()
+            else:
+                return self.generator()

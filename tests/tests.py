@@ -78,25 +78,29 @@ class TestModelInterfaceLayer(unittest.TestCase):
         Verify that the modules
         can load and generate
         randoms.
-
-        THIS TEST FAILS
         """
-        entry = "scipy"
-        # test without params
-        test_instance_no_param = mil.ModelInterface(engine=entry, params=False)
+        engine = "scipy.stats"
+        method = "norm"
+        seed = 1111
+        params = [3, 3]
+
+        numpy = ipl.import_module("numpy.random")
+        numpy.seed(seed)
+
+        model = ipl.import_module(engine)
+        generator = getattr(model, method)
+        results = generator(*params).rvs()
+
+        del numpy
+
         test_instance_param = mil.ModelInterface(
-            engine=entry, params=[9, 1])
+            engine=engine, params=params, seed=seed)
+        test_instance_param.scipy_generator(method)
+        results_params = test_instance_param.generate_random_scipy(rvs=True)
 
-        test_instance_no_param.scipy_generator("normal")
-        test_instance_param.scipy_generator("normal")
+        assert(results_params == results)
+        assert(type(results) == type(results_params))
 
-        results_no_params = test_instance_no_param.generate_random_scipy()
-        results_params = test_instance_param.generate_random_scipy()
-
-        print(results_no_params)
-        print(results_params)
-        assert isinstance(results_params, float)
-        assert isinstance(results_no_params, float)
 
 
 class TestStatisticalModelInterfaceLayer(unittest.TestCase):
