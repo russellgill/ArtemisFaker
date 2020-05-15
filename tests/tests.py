@@ -147,12 +147,13 @@ class TestStatisticalModelInterfaceLayer(unittest.TestCase):
 
 class TestFakerModelInterfaceLayer(unittest.TestCase):
 
-    def test_generator(self):
+    def test_generator_factory(self):
         generatable_names = ["first_names_female", "last_names"]
         class_name = "people.py"
         method = "Provider"
         fmil_obj = fmil(class_name, method, generatable_names)
-        fmil_obj.return_available_generatables()
+        output_check = fmil_obj.return_available_generatables()
+        assert(len(output_check) == len(generatable_names))
         
 
 
