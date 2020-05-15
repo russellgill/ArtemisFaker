@@ -37,4 +37,5 @@ jobs:
     - name: "Run tests"
       run: |
         pip install .
+        pip install numpy scipy
         python tests/tests.py
