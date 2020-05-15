@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 class Provider():
     formats_female = OrderedDict((
         ('{{first_name_female}} {{last_name}}', 0.97),
