@@ -38,8 +38,10 @@ class ModelInterface():
         within the custom generators.
         """
         # Set generator
-        generator = getattr(self.model, method)
-
+        if self.generator_override:
+            generator = getattr(self.model, method)
+        else:
+            generator = self.generator
         # Set seed
         if self.seed:
             set_seed = getattr(self.model, "set_seed")
@@ -50,6 +52,30 @@ class ModelInterface():
             return generator(self.params)
         elif not self.params:
             return generator()
+
+    def external_engine(self, engine=None, isFunction=False):
+        """
+        This method accepts a class or function as an input,
+        checks it to verify that it is a callable
+        and instantiates the object into the
+        class instance.
+        """
+        if engine is None:
+            return False
+
+        try:
+            assert callable(engine)
+        except AssertionError:
+            return False
+        
+        if isFunction:
+            self.generator_override = True
+            self.generator = engine
+
+        else:
+            self.generator_override = False
+            self.method = engine     
+
 
     def numpy_generator(self, method):
         """
@@ -71,6 +97,9 @@ class ModelInterface():
         """
         Factory method for returning
         the random number generator.
+
+        I believe this method is now
+        redundant!!
         """
         model = self.generator
         params = self.params

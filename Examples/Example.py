@@ -17,5 +17,14 @@ limitations under the License.
 import ArtemisFaker
 from ArtemisFaker import ModelInterfaceLayer as ifc
 
-ifc.ModelInterface(seed=False, model=None, engine=None,
-                   params=False, isDefault=False)
+def AtomicEnergies():
+    """
+    Method generates a simulated atomic state.
+    Here we use the package to develop a monte-carlo
+    simulation.
+    """
+    engine = "monte_carlo"
+    params = None
+    seed = 6261023
+    ifc.ModelInterface(
+            engine=engine, params=params, seed=seed
