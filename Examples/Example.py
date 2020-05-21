@@ -16,6 +16,41 @@ limitations under the License.
 """
 import ArtemisFaker
 from ArtemisFaker import ModelInterfaceLayer as ifc
+from numpy.random import dirichlet, choice
+import numpy as np
+import requests
+from collections import OrderedDict
+
+class GeneratorClass():
+
+    def __init__(self, size=1):
+        # Build an array of probs that sums to one
+        name_file = "https://raw.githubusercontent.com/dominictarr/random-name/master/first-names.txt"
+        self.names = requests.get(name_file).text
+        self.target_dict = self.generate_od()
+
+    
+    def generate_od(self):
+        names = self.generate_namelist()
+        od = OrderedDict()
+        self.probabilities = dirichlet(np.ones(self.sample),size=1))
+        for i, entry in enumerate(probabilities):
+            od[entry] = names[i]
+        return od
+
+    def generate_namelist(self):
+        names = []
+        self.sample = 0
+        for line in self.names:
+            names.append(line.strip("/n"))
+            self.sample += 1
+        return names
+
+    def generate_name(self):
+        key = choice(self.probabilities)
+        return self.target_dict[key]
+
+
 
 def AtomicEnergies():
     """
@@ -23,8 +58,13 @@ def AtomicEnergies():
     Here we use the package to develop a monte-carlo
     simulation.
     """
-    engine = "monte_carlo"
+
+    engine = GeneratorClass()
+    engine = None
     params = None
-    seed = 6261023
-    ifc.ModelInterface(
+    seed = None
+    model_instance = ifc.ModelInterface(
             engine=engine, params=params, seed=seed)
+    model_instance.external_engine(engine, isFunction=False)
+    model_instance.custom_generator("generate_name")
+    result = model_instance.generate_random()

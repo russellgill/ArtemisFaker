@@ -30,7 +30,7 @@ class ModelInterface():
         if params:
             self.params = params
 
-    def custom_generator(self, method):
+    def custom_generator(self, method=None):
         """
         Method allowing importing external
         custom synthetic data generators.
@@ -38,8 +38,10 @@ class ModelInterface():
         within the custom generators.
         """
         # Set generator
-        if self.generator_override:
+        if self.generator_override and method=None:
             generator = getattr(self.model, method)
+        elif self.generator_override and not (method is None):
+            return False
         else:
             generator = self.generator
         # Set seed
