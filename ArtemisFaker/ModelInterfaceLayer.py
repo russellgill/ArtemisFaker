@@ -16,21 +16,24 @@ limitations under the License.
 """
 
 import importlib as ipl
+import inspect
 
 class ModelInterface():
 
-    def __init__(self, seed=False, engine=None, params=False):
-        self.params = params
+    def __init__(self, seed=False, engine=None):
         self.seed = seed
         if (engine is not None):
-            if ("scipy" not in engine.lower()) and (not seed):
-                self.model = ipl.import_module(engine)
+            if isinstance(engine, str):
+                if ("scipy" not in engine.lower()) and (not seed):
+                    self.model = ipl.import_module(engine)
+                else:
+                    self.model = engine
             else:
                 self.model = engine
-        if params:
-            self.params = params
+        else:
+            raise ValueError
 
-    def custom_generator(self, method=None):
+    def custom_generator(self, method=None, function=False):
         """
         Method allowing importing external
         custom synthetic data generators.
@@ -38,46 +41,20 @@ class ModelInterface():
         within the custom generators.
         """
         # Set generator
-        if self.generator_override and method=None:
+        if not function:
             generator = getattr(self.model, method)
-        elif self.generator_override and not (method is None):
-            return False
-        else:
-            generator = self.generator
-        # Set seed
-        if self.seed:
-            set_seed = getattr(self.model, "set_seed")
-            set_seed(self.seed)
 
-        # Call generator with or without params
-        if self.params:
-            return generator(self.params)
-        elif not self.params:
-            return generator()
+                # Set seed
+            if self.seed:
+                set_seed = getattr(self.model, "set_seed")
+                set_seed(self.seed)
 
-    def external_engine(self, engine=None, isFunction=False):
-        """
-        This method accepts a class or function as an input,
-        checks it to verify that it is a callable
-        and instantiates the object into the
-        class instance.
-        """
-        if engine is None:
-            return False
-
-        try:
-            assert callable(engine)
-        except AssertionError:
-            return False
-        
-        if isFunction:
-            self.generator_override = True
-            self.generator = engine
+                # Call generator with or without params
+            self.generator = generator
 
         else:
-            self.generator_override = False
-            self.method = engine     
-
+            # Just skips over the entire setting process
+            self.generator = self.model
 
     def numpy_generator(self, method):
         """
@@ -95,16 +72,13 @@ class ModelInterface():
         # Get the specific generator
         self.generator = getattr(model, method)
 
-    def generate_random(self):
+    def generate_random(self, params=None):
         """
         Factory method for returning
         the random number generator.
-
-        I believe this method is now
-        redundant!!
         """
         model = self.generator
-        params = self.params
+        params = params
         if params:
             return model(*params)
         else:
@@ -128,14 +102,14 @@ class ModelInterface():
         # Now instantiate the generator
         self.generator = getattr(model, method)
 
-    def generate_random_scipy(self, rvs=False):
+    def generate_random_scipy(self, params, rvs=False):
         # Call generator with
-        if self.params:
+        if params:
             if rvs:
-                return self.generator(*self.params).rvs()
+                return self.generator(*params).rvs()
             else:
-                return self.generator(*self.params)
-        elif not self.params:
+                return self.generator(*params)
+        elif not params:
             if rvs:
                 return self.generator().rvs()
             else:
