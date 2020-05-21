@@ -27,4 +27,4 @@ def AtomicEnergies():
     params = None
     seed = 6261023
     ifc.ModelInterface(
-            engine=engine, params=params, seed=seed
+            engine=engine, params=params, seed=seed)
