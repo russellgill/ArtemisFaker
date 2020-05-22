@@ -31,7 +31,8 @@ class TestModelInterfaceLayer(unittest.TestCase):
         Verify that seeds can be set.
         """
         test_seed = 11111
-        test_instance = mil.ModelInterface(seed=test_seed)
+        engine = "numpy"
+        test_instance = mil.ModelInterface(seed=test_seed, engine=engine)
         test_instance.numpy_generator("get_state")
         seed_actual = test_instance.generate_random()
         assert(seed_actual[1][0] == test_seed)
@@ -45,13 +46,6 @@ class TestModelInterfaceLayer(unittest.TestCase):
         module = test_instance.model
         assert(ipl.import_module(test_module) == module)
 
-    def test_MIL_params(self):
-        """
-        Verify that the params can get loaded in.
-        """
-        test_params = [1, 2, 3]
-        test_instance = mil.ModelInterface(params=test_params)
-        assert(test_instance.params == test_params)
 
     def test_MIL_gen_rand(self):
         """
@@ -72,15 +66,11 @@ class TestModelInterfaceLayer(unittest.TestCase):
         del numpy 
 
         # test without params
-        test_instance_no_param = mil.ModelInterface(engine=engine, params=False)
-        test_instance_param = mil.ModelInterface(
-            engine=engine, params=params)
+        test_instance = mil.ModelInterface(engine=engine)
+        test_instance.numpy_generator(method)
 
-        test_instance_no_param.numpy_generator(method)
-        test_instance_param.numpy_generator(method)
-
-        results_no_params = test_instance_no_param.generate_random()
-        results_params = test_instance_param.generate_random()
+        results_no_params = test_instance.generate_random()
+        results_params = test_instance.generate_random(params)
         assert isinstance(results_params, float)
         assert isinstance(results_no_params, float)
         assert (results_params == test_result)
@@ -106,9 +96,9 @@ class TestModelInterfaceLayer(unittest.TestCase):
         del numpy
 
         test_instance_param = mil.ModelInterface(
-            engine=engine, params=params, seed=seed)
+            engine=engine, seed=seed)
         test_instance_param.scipy_generator(method)
-        results_params = test_instance_param.generate_random_scipy(rvs=True)
+        results_params = test_instance_param.generate_random_scipy(params, rvs=True)
 
         assert(results_params == results)
         assert(type(results) == type(results_params))

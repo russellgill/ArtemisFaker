@@ -44,6 +44,9 @@ class GeneratorClass():
         self.sample = len(names)
         return names
 
+    def describe(self):
+        return "generate_name"
+
     def generate_name(self):
         #key_proto = random.uniform(min(self.probabilities), max(self.probabilities))
         return random.choice(self.names)
