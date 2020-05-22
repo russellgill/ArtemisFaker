@@ -32,9 +32,14 @@ class TestModelInterfaceLayer(unittest.TestCase):
         """
         test_seed = 11111
         engine = "numpy"
-        test_instance = mil.ModelInterface(seed=test_seed, engine=engine)
+        seeded_np = ipl.import_module("numpy.random")
+        seeded_np.seed(test_seed)
+        test_instance = mil.ModelInterface(engine=engine)
+        test_instance.set_numpy(seeded_np)
+
         test_instance.numpy_generator("get_state")
         seed_actual = test_instance.generate_random()
+
         assert(seed_actual[1][0] == test_seed)
 
     def test_MIL_engine(self):
@@ -63,46 +68,13 @@ class TestModelInterfaceLayer(unittest.TestCase):
 
         test_result = numpy.uniform(params)
         
-        del numpy 
+        test_instance = mil.ModelInterface()
 
-        # test without params
-        test_instance = mil.ModelInterface(engine=engine)
+        test_instance.set_numpy(numpy)
+
         test_instance.numpy_generator(method)
-
-        results_no_params = test_instance.generate_random()
-        results_params = test_instance.generate_random(params)
-        assert isinstance(results_params, float)
-        assert isinstance(results_no_params, float)
-        assert (results_params == test_result)
-
-    def test_MIL_gen_rand(self):
-        """
-        Verify that the modules
-        can load and generate
-        randoms.
-        """
-        engine = "scipy.stats"
-        method = "norm"
-        seed = 1111
-        params = [3, 3]
-
-        numpy = ipl.import_module("numpy.random")
-        numpy.seed(seed)
-
-        model = ipl.import_module(engine)
-        generator = getattr(model, method)
-        results = generator(*params).rvs()
-
-        del numpy
-
-        test_instance_param = mil.ModelInterface(
-            engine=engine, seed=seed)
-        test_instance_param.scipy_generator(method)
-        results_params = test_instance_param.generate_random_scipy(params, rvs=True)
-
-        assert(results_params == results)
-        assert(type(results) == type(results_params))
-
+        
+        test_instance.generate_random(params)
 
 
 class TestStatisticalModelInterfaceLayer(unittest.TestCase):

@@ -18,21 +18,36 @@ limitations under the License.
 import importlib as ipl
 import inspect
 
-class ModelInterface(ArtemisFaker):
+class ModelInterface():
 
-    def __init__(self, seed=False, engine=None, isfunction=False, isclass=False):
-        self.seed = seed
+    def __init__(self, engine=None, isfunction=False, isclass=False):
+
+        """
+        Refactor this tp handler more correct interfacing.
+        SHOULD NOT be using this number of conditionals to
+        filter the correct behaviour.
+
+        Here there are lots of things that get overridden.
+        """
         self.kinds = (isfunction, isclass)
         if (engine is not None):
             if not (isfunction or isclass):
-                if ("scipy" not in engine.lower()) and (not seed):
+                if (("scipy" or "numpy") not in engine.lower()):
                     self.model = ipl.import_module(engine)
                 else:
                     self.model = engine
             else:
                 self.model = engine
         else:
-            raise ValueError
+            pass
+    
+    def set_numpy(self, numpyinst=None):
+        try:
+            assert (numpyinst is not None)
+        except AssertionError:
+            raise ValueError("Numpy failed to instantiate.")
+        self.numpy = numpyinst
+        
 
     def custom_generator(self, method=None):
         """
@@ -44,13 +59,6 @@ class ModelInterface(ArtemisFaker):
         # Set generator
         if (not self.kinds[0]) and (self.kinds[1]):
             generator = getattr(self.model, method)
-
-                # Set seed
-            if self.seed:
-                set_seed = getattr(self.model, "set_seed")
-                set_seed(self.seed)
-
-                # Call generator with or without params
             self.generator = generator
 
         elif (self.kinds[0]) and (not self.kinds[1]):
@@ -63,15 +71,8 @@ class ModelInterface(ArtemisFaker):
         random number generation tools.
         Allows seeding of generator.
         """
-        # Import numpy dynamically
-        model = ipl.import_module("numpy.random")
-        if self.seed:
-            # Now set the seed
-            seed_setter = getattr(model, "seed")
-            seed_setter(self.seed)
-
         # Get the specific generator
-        self.generator = getattr(model, method)
+        self.generator = getattr(self.numpy, method)
 
     def generate_random(self, params=None):
         """
@@ -93,13 +94,6 @@ class ModelInterface(ArtemisFaker):
         """
         # Instantiate the model
         model = ipl.import_module(self.model) # There is an error in here. Walk through with a debugger.
-        # Instantiate a numpy instance in the same scope
-        if self.seed:
-            rng = ipl.import_module("numpy.random")
-            # Now set the seed
-            seed_setter = getattr(rng, "seed")
-            seed_setter(self.seed)
-
         # Now instantiate the generator
         self.generator = getattr(model, method)
 
