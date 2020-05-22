@@ -18,7 +18,7 @@ limitations under the License.
 import importlib as ipl
 import inspect
 
-class ModelInterface():
+class ModelInterface(ArtemisFaker):
 
     def __init__(self, seed=False, engine=None, isfunction=False, isclass=False):
         self.seed = seed
