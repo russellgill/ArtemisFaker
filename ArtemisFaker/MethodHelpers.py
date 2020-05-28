@@ -26,8 +26,8 @@ class MethodHandler():
             self.method = method # Set the method
         except AssertionError:
             try: # Check if numpy, will trip only if seeded
-                assert self._is_numpy()
-                self._check_child(self)
+                assert not self._is_numpy()
+                self._check_child()
                 return self.parent
             except AssertionError:
                 raise ImportError("Error: Failed to resolve module.")
