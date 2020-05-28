@@ -1,5 +1,7 @@
-import numpy.random as random
-from importlib import import_module
+import numpy.random as random # Random number genreator Numpy
+from importlib import import_module # Import module
+from ArtemisFaker.MethodHelpers import MethodHandler # Get the method helpers
+from ArtemisFaker.ModelHelpers import ModelInterface # Get the model helpers
 
 NUMPY = random
 
@@ -32,6 +34,3 @@ class ArtemisFaker(MethodHandler):
             return interface.generate_random(params)
         except KeyError:
             raise ArtemisError("Faker method not available.")
-
-
-        

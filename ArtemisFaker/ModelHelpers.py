@@ -29,19 +29,20 @@ class ModelInterface():
             result = self.psudo_switch[self.parent.__name__]  # Grab method
             return result()
         except KeyError:
-            print("Failure")
             result = self.custom()  # Othewise get custom method
 
     def scipygen(self): # For scipy methods
+        generator = getattr(self.parent, self.method)
         try:
-            getattr(self.method, "rvs")  # Check if an rvs method
+            
+            getattr(generator, "rvs")  # Check if an rvs method
             if self.params:
-                return getattr(self.parent, self.method)(*self.params).rvs()
+                return generator(*self.params).rvs()
             else:
-                return getattr(self.parent, self.method)().rvs()
+                return generator().rvs()
 
         except AttributeError: # Otherwise skip that
-            if params:
+            if self.params:
                 return getattr(self.parent, self.method)(*self.params)
             else:
                 return getattr(self.parent, self.method)()
