@@ -115,13 +115,14 @@ class FakerUnitTest(unittest.TestCase):
             def uniform(self):
                 return 1
 
+        provider = TestMethod # This is the instantiated method
         """
         Test the ability to load and access
         the data that is returned out.
         """        
         faker = Faker.ArtemisFaker(seed=seed)
-        faker.add_faker(TestMethod(), "uniform")
-        results = faker.fake(params)
+        faker.add_faker(provider, method)
+        results = faker.fake(params, method)
         assert(results)
         assert(results == 1)
 
