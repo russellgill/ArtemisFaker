@@ -18,18 +18,18 @@ limitations under the License.
 class ModelInterface():
 
     def __init__(self, parent, method):
-        self.parent = parent  # Assumes instantiated class or method
-        self.method = method # The method
+        self.parent = parent  # Assumes instantiated class or method (1)
+        self.method = method # The method is loaded (2)
         self.psudo_switch = {"scipy.stats": self.scipygen,
-                             "numpy.random": self.numpygen}  # Executes known actions
+                             "numpy.random": self.numpygen}  # Executes known actions (3)
         
     def generate_random(self, params=None): # Generate the results
         self.params = params  # Set params
         try:
-            result = self.psudo_switch[self.parent.__name__]  # Grab method
+            result = self.psudo_switch[self.parent.__name__] # Grab method from (3)
             return result()
-        except KeyError:
-            result = self.custom()  # Othewise get custom method
+        except AttributeError:
+            result = self.custom()  # Othewise get custom method as the "default" for (3)
 
     def scipygen(self): # For scipy methods
         generator = getattr(self.parent, self.method)
@@ -51,10 +51,10 @@ class ModelInterface():
         if self.params: # Control for params
             return getattr(self.parent, self.method)(*self.params)
         else:
-            return getattr(self.module, self.method)()
+            return getattr(self.parent, self.method)()
 
     def custom(self): # For custom code
         if self.params: # Control the params
             return getattr(self.parent, self.method)(*self.params)
         else:
-            return getattr(self.module, self.method)()
+            return getattr(self.parent, self.method)()

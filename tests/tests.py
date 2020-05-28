@@ -112,10 +112,11 @@ class FakerUnitTest(unittest.TestCase):
         a controlled value.
         """
         class TestMethod():
+
             def uniform(self):
                 return 1
 
-        provider = TestMethod  # This is the uninitialized method
+        provider = TestMethod()  # This is the uninitialized method
         """
         Test the ability to load and access
         the data that is returned out.
@@ -123,7 +124,7 @@ class FakerUnitTest(unittest.TestCase):
         faker = Faker.ArtemisFaker(seed=seed)  # Create faker instance
         faker.add_faker(provider, method)  # Create add faker instance
 
-        results = faker.fake(params, method)  # Create the actual result
+        results = faker.fake(method, params)  # Create the actual result
 
         assert(results)  # Assert that the result is real
         assert(results == 1)  # Check that the results are what I intend
