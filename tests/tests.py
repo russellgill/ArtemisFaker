@@ -20,6 +20,12 @@ from importlib import import_module
 import unittest
 
 
+class TestMethod():
+
+    def uniform(self, param):
+        return param
+
+
 class FakerUnitTest(unittest.TestCase):
 
     def test_numpy_generate(self):
@@ -111,12 +117,9 @@ class FakerUnitTest(unittest.TestCase):
         single method that returns
         a controlled value.
         """
-        class TestMethod():
 
-            def uniform(self, param):
-                return param
+        provider = TestMethod()  # This is the uninitialized method
 
-        provider = TestMethod  # This is the uninitialized method
         """
         Test the ability to load and access
         the data that is returned out.
@@ -124,7 +127,7 @@ class FakerUnitTest(unittest.TestCase):
         faker = Faker.ArtemisFaker(seed=seed)  # Create faker instance
         faker.add_faker(provider, method)  # Create add faker instance
 
-        results = faker.fake(method, params)  # Create the actual result
+        results = faker.fake(method, params=params)  # Create the actual result
 
         assert(results)  # Assert that the result is True
 

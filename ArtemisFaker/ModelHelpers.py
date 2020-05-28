@@ -28,7 +28,7 @@ class ModelInterface():
         try:
             result = self.psudo_switch[self.parent.__name__] # Grab method from (3)
             return result()
-        except AttributeError:
+        except (AttributeError, KeyError):
             result = self.custom()  # Othewise get custom method as the "default" for (3)
 
     def scipygen(self): # For scipy methods
