@@ -26,9 +26,13 @@ class ModelInterface():
     def generate_random(self, params=None): # Generate the results
         self.params = params  # Set params
         try:
-            result = self.psudo_switch[self.parent.__name__] # Grab method from (3)
+            try:
+                name = self.parent.__name__
+            except AttributeError:
+                name  = self.parent.__class__.__name__
+            result = self.psudo_switch[name] # Grab method from (3)
             return result()
-        except (AttributeError, KeyError):
+        except KeyError:
             result = self.custom()  # Othewise get custom method as the "default" for (3)
 
     def scipygen(self): # For scipy methods
@@ -43,18 +47,24 @@ class ModelInterface():
 
         except AttributeError: # Otherwise skip that
             if self.params:
-                return getattr(self.parent, self.method)(*self.params)
+                return self._fetch_and_return_params()
             else:
-                return getattr(self.parent, self.method)()
+                return self._fetch_and_return()
 
     def numpygen(self): # For numpy
         if self.params: # Control for params
-            return getattr(self.parent, self.method)(*self.params)
+            return self._fetch_return_params()
         else:
-            return getattr(self.parent, self.method)()
+            return self._fetch_and_return()
 
     def custom(self): # For custom code
         if self.params: # Control the params
-            return getattr(self.parent, self.method)(*self.params)
+            return self._fetch_return_params()
         else:
-            return getattr(self.parent, self.method)()
+            return self._fetch_and_return()
+    
+    def _fetch_return_params(self):
+        return getattr(self.parent, self.method)(*self.params)
+    
+    def _fetch_and_return(self):
+        getattr(self.parent, self.method)()
