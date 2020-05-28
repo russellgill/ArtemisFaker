@@ -104,7 +104,7 @@ class FakerUnitTest(unittest.TestCase):
         """
         seed = None  # Set the seed
         method = "uniform"  # The method name
-        params = None  # No params
+        params = [True]  # We will just return the param
         """
         This closed class is a 
         test method that has a 
@@ -113,10 +113,10 @@ class FakerUnitTest(unittest.TestCase):
         """
         class TestMethod():
 
-            def uniform(self):
-                return 1
+            def uniform(self, param):
+                return param
 
-        provider = TestMethod()  # This is the uninitialized method
+        provider = TestMethod  # This is the uninitialized method
         """
         Test the ability to load and access
         the data that is returned out.
@@ -126,8 +126,7 @@ class FakerUnitTest(unittest.TestCase):
 
         results = faker.fake(method, params)  # Create the actual result
 
-        assert(results)  # Assert that the result is real
-        assert(results == 1)  # Check that the results are what I intend
+        assert(results)  # Assert that the result is True
 
 
 if __name__ == "__main__":
