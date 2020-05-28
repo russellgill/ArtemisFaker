@@ -1,37 +1,37 @@
-from Layers import FakerModelInterfaceLayer, FakerModelInterfaceLayer, StatisticalModelTemplate
-from numpy import random
+import numpy.random as random
+from importlib import import_module
 
-RANDOM = random # Set global RANDOM object. We will use this and pass it around.
+NUMPY = random
 
-class ArtemisFaker():
+class ArtemisError(Exception):
+    pass
+
+class ArtemisFaker(MethodHandler):
 
     def __init__(self, seed=None):
-        self.providers = []
-        self.random = RANDOM
-        if seed:
-            self.set_seed(seed)
+        super().__init__()
+        self.are_avilable = {}
+        self.seed = seed # Set the seed
+        if self.seed is not None: 
+            self._set_seed()
 
-    def set_seed(self, seed=None):
-        """
-        Setting the global random object.
-        """
-        try:
-            assert(isinstance(seed, int)) or isinstance(seed, float))
+    def _set_seed(self):
+        NUMPY.seed(self.seed)
 
-        except AssertionError:
-            raise ValueError("Falied to set seed. Expected type 'float' or 'int', got %s" %type(seed))
-
-    def add_provider(self, engine, params, isPackage=False):
-        """
-        I want to fix this here, however I need to think more
-        about the way the system will function and what is 
-        needed to do that.
-        """
-        if isPackage:
-            instance = FakerModelInterfaceLayer.ModelInterface(engine=engine)
-            instance.set_numpy(self.random)
+    def add_faker(self, parent, method):
+        parent = super().get_parent(parent, method)
+        if parent.__name__ != NUMPY.__name__:
+            interface = ModelInterface(parent, method)
         else:
-            instance = FakerModelInterfaceLayer.ModelInterface(engine=None)
-            instance.set_numpy(self.random)
-            
-        return provider
+            interface = ModelInterface(NUMPY, method)
+        self.are_avilable[method] = interface
+    
+    def fake(self, method, params=None):
+        try:
+            interface = self.are_avilable[method]
+            return interface.generate_random(params)
+        except KeyError:
+            raise ArtemisError("Faker method not available.")
+
+
+        
