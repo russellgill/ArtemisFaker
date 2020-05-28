@@ -32,5 +32,5 @@ class ArtemisFaker(MethodHandler):
         try:
             interface = self.are_avilable[method]
             return interface.generate_random(params)
-        except KeyError:
+        except KeyError as error:
             raise ArtemisError("Faker method not available.")

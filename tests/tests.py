@@ -102,9 +102,9 @@ class FakerUnitTest(unittest.TestCase):
         on the ability of the method
         to accept in a custom class.
         """
-        seed = None # Set the seed
-        method = "uniform" # The method name
-        params = None # No params
+        seed = None  # Set the seed
+        method = "uniform"  # The method name
+        params = None  # No params
         """
         This closed class is a 
         test method that has a 
@@ -115,16 +115,19 @@ class FakerUnitTest(unittest.TestCase):
             def uniform(self):
                 return 1
 
-        provider = TestMethod # This is the uninitialized method
+        provider = TestMethod  # This is the uninitialized method
         """
         Test the ability to load and access
         the data that is returned out.
-        """        
-        faker = Faker.ArtemisFaker(seed=seed) # Create faker instance
-        faker.add_faker(provider, method) # Create add faker instance
-        results = faker.fake(params, method) # Create the actual result
-        assert(results) # Assert that the result is real
-        assert(results == 1) # Check that the results are what I intend
+        """
+        faker = Faker.ArtemisFaker(seed=seed)  # Create faker instance
+        faker.add_faker(provider, method)  # Create add faker instance
+
+        results = faker.fake(params, method)  # Create the actual result
+
+        assert(results)  # Assert that the result is real
+        assert(results == 1)  # Check that the results are what I intend
+
 
 if __name__ == "__main__":
     unittest.main()

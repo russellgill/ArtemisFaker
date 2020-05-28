@@ -15,35 +15,51 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from importlib import import_module
+from importlib import import_module  # Import libary module tool
 
 class MethodHandler():
 
     def get_parent(self, parent, method):
-        self.parent = parent
-        try:
-            assert isinstance(method, str) and isinstance(parent, str)
+        """
+        This runs some checks against the 
+        parent method to ensure that the
+        method is actually in the parent class.
+        """
+        self.parent = parent # Load in the parent
+        try: # Run the check
+            assert isinstance(method, str) and isinstance(parent, str) # Check that the data is a string
             self.method = method # Set the method
-        except AssertionError:
-            try: # Check if numpy, will trip only if seeded
-                assert not self._is_numpy()
-                self.method = method
-                self._check_child()
-                return self.parent
-            except AssertionError:
-                raise ImportError("Error: Failed to resolve module.")
+        except AssertionError: # If not
+            try: # Check if not numpy, will trip only if seeded
+                if not self._is_numpy(): # Run the check numpy
+                    self.method = method # Load in the method
+                    self._check_child() # Check that it exists
+                    return self.parent # Return out the parent
+                elif self._is_numpy(): # If it actually is numpy
+                    self.method = method
+                    self._check_child()
+                    return self.parent
+            except AssertionError: # If that fails
+                raise ImportError("Error: Failed to resolve module.") # Complain if the model fails all this
         self._check_child() # Verify that the submethod is valid
         return import_module(self.parent) # Return it as inst object
 
     def _is_numpy(self):
-        try:
-            assert self.parent != "numpy.random"
-            return False
-        except AssertionError:
-            return True
+        """
+        Check if the method is numpy
+        """
+        try: # Verify that is is numpy
+            assert self.parent != "numpy.random" # Assert the method name
+            return False # Return false 
+        except AssertionError: # if it fails
+            return True # return True
 
     def _check_child(self):
-        try:
+        """
+        Verify that the method is
+        inside the parent.
+        """
+        try: # Try
             getattr(self.parent, self.method) # Check if parent contains child
-        except:
-            ImportError("Error: module %s not in %s" %(self.method, self.parent))
+        except AttributeError: # Catch an attribute error and elaborate 
+            ImportError("Error: module %s not in %s" %(self.method, self.parent)) # Alert that the method does not exist
