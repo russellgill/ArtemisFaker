@@ -41,8 +41,9 @@ class MethodHandler():
                     return self.parent
             except AssertionError: # If that fails
                 raise ImportError("Error: Failed to resolve module.") # Complain if the model fails all this
+        self.parent = import_module(self.parent) # We mutate the self.parent variable here.
         self._check_child() # Verify that the submethod is valid
-        return import_module(self.parent) # Return it as inst object
+        return self.parent # Return it as inst object
 
     def _is_numpy(self):
         """

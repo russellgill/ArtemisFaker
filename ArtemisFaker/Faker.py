@@ -53,6 +53,7 @@ class ArtemisFaker(MethodHandler):
             interface = self.are_avilable[method]
             # Produce the random value
             return interface.generate_random(params)
+
         except KeyError:  # Catch the error if it is not instantiated
             print(method)
             # Raise an error if it is not there.

@@ -33,7 +33,7 @@ class ModelInterface():
             result = self.psudo_switch[name] # Grab method from (3)
             return result()
         except KeyError:
-            result = self.custom()  # Othewise get custom method as the "default" for (3)
+            return self.custom()  # Othewise get custom method as the "default" for (3)
 
     def scipygen(self): # For scipy methods
         generator = getattr(self.parent, self.method)

@@ -133,4 +133,25 @@ class FakerUnitTest(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    unittest.main()
+
+    """
+    Pure python test
+    """
+    params = [True]  # The parameters in the provider
+    method = "uniform"  # The name of the provider
+    provider = TestMethod()  # Create instance of the target method
+    # Get method by regular means, return result
+    """
+    result = provider.uniform(*params) # This is the method for getting the result from the provider
+    result_getattr = getattr(provider, method)(
+        *params)  # Get method by name, return result
+    assert(result == result_getattr)  # Verify that both the results are equal
+    assert(result == True)  # Verify that the result is the boolean value True
+    """
+    """
+    Faker test
+    """
+    faker = Faker.ArtemisFaker(seed=None)  # Create an artemis faker method
+    faker.add_faker(provider, method)  # Inject a faker instance into it
+    result = faker.fake(method, params=params)  # Call from the faker instance
+    print(result)  # Print out the result
