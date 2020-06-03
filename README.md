@@ -9,7 +9,9 @@ By implementing the Numpy random number generator as the back-end for the system
 ArtemisFaker is broken down into three core components:
 
 Faker.py: serves as a high level abstraction layer between the end-user and the two other underlying components in the system. This component provides an engine-agnostic user-interface to allow the calling of any method, with any generator engine using invariant syntax. 
+
 MethodHelpers.py: provides helpers to lazy-load, as well as verify the validity of a request to a module and method. This module contains the MethodHandler class which executes three main functions: first, it handles the loading in and processing of the module itself. Secondly, the method executes control flows to prevent the overriding of the Numpy seeding in the back-end of the ArtemisFaker module. Finally, the method requested to be loaded is checked against the module provided to verify that it is a valid method in the module. 
+
 ModelHelpers.py: is the deepest level of abstraction in the package and contains the ModelInterface class. Given that Numpy, Scipy and custom generators each need specialized processing to generate the generation step, this class allows random number generation, as well as controls the handling of the parameters passed to the generation modules and methods. Note that this is not an interface design pattern, but rather a class which interfaces with external modules, and user-generated code.
 
 ## Workflow Examples
