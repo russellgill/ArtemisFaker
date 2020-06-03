@@ -53,7 +53,7 @@ We now load in our method to the instance of ArtemisFaker.
 >>> fake.add_faker(module, method)
 ```
 
-This has now loaded in the module to ArtemisFaker. The module is made accesable by the name of the method that is being called. These are stored as a key-value pair in the module. What this means is that, to access the module for generating random numbers, all that must be done is request, by name, the generator method. The engine is no longer needed in the call, as the generator is not simply handled as an ArtemisFaker generator.
+This has now loaded in the module to ArtemisFaker. The module is made accesable by the name of the method that is being called. These are stored as a key-value pair in the module. What this means is that, to access the module for generating random numbers, all that must be done is request, by name, the generator method. The engine is no longer needed in the call, as the generator is simply handled as an ArtemisFaker generator.
 
 #### Techincal Notes
 
