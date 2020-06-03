@@ -57,7 +57,7 @@ This has now loaded in the module to ArtemisFaker. The module is made accesable 
 
 #### Techincal Notes
 
-```fake.add_faker(parent, method)``` is a rather involved process. The super-class calls it's method ```super().get_parent(parent, method)```. This method is also rather involved. Before getting into the details, it is important to note that the entire purpose of this method, is to return an object to the ArtemisFaker intance which is callable later on.
+```fake.add_faker(parent, method)``` is a rather involved process. The super-class calls it's method ```super().get_parent(parent, method)```. This method is also rather involved. Before getting into the details, it is important to note that the entire purpose of this method is to return an object to the ArtemisFaker intance which is callable later on.
 
 Under-the-hood, the method sets the module in ```self.parent```. The control-sequence verifies that the method and the parent are both strings. This senario causes the methods to be lazy-imported. Should this not be the case, and the user has presented a callable method to the ```fake.add_faker(parent, method)``` method, an ```AssertionError``` is triggered. In the catch block, the method is checked to verify that it is not Numpy. If it is, infact Numpy, to avoid overwriting the state of the RNG back-end, Numpy is not imported, and the back-end's instance of Numpy is used to provide the random number generation. Otherwise, the module quickly checked to verify that the requested method is contained in the module. Should this test pass, the module is returned back to the Faker class. 
 
