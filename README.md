@@ -61,7 +61,7 @@ This has now loaded in the module to ArtemisFaker. The module is made accesable 
 
 Under-the-hood, the method sets the module in ```self.parent```. The control-sequence verifies that the method and the parent are both strings. This senario causes the methods to be lazy-imported. Should this not be the case, and the user has presented a callable method to the ```fake.add_faker(parent, method)``` method, an ```AssertionError``` is triggered. In the catch block, the method is checked to verify that it is not Numpy. If it is, infact Numpy, to avoid overwriting the state of the RNG back-end, Numpy is not imported, and the back-end's instance of Numpy is used to provide the random number generation. Otherwise, the module quickly checked to verify that the requested method is contained in the module. Should this test pass, the module is returned back to the Faker class. 
 
-In the case that this is neither numpy, nor a callable, the class loads the module, and from there checks if the method is contained. Once this is completed, the method then returns the callable to Faker.
+In the case that this is neither numpy, nor a callable, the class loads the module, and from there checks if the method is contained. Once this is completed, the method then returns the callable to Faker. Once returned back to the Faker instance, a ModelInterface instance is created which contains the parent and the target method. This is then loaded into a hashmap/dictonary to allow retreval later.
 
 ### Generating a random number
 
@@ -71,6 +71,14 @@ Now that we have the system staged, we can generate a random number.
 >>> result
 0.67
 ```
+
+#### Technical Notes
+
+The random number generation requires different control logic depending on what random number generation method is being called. For instance, while with numpy you can simply call ```numpy.random.uniform(*params)```, whereas with scipy, you have to call ```scipy.stats.normal(*params).rvs()``` for some instances. To properly capture this behaviour, the ModelInterface which was created later is accessed by key. We then access the ```interface.generate_random(params)``` method. 
+
+Inside the ```interface.generate_random(params)```, a switch like argument is executed to determine if the method is scipy-based or numpy-based. If either of these are the case, the dedicated methods are called. Otherwise, the default condition of the custom method generator is called. 
+
+As things become very general at this point, we will look at the custom generator. Once this method is called, we check if ```self.params```'s state has been changed from the default of ```None```. If this is the case, the method is fetched by name with ```getattr(generator, method)``` and passed params. Otherwise, the generator is called without params. The result of the execution is returned to the Faker module. The value is then returned to the main program.
 
 ### Instances with multiple fakers
 
