@@ -39,6 +39,10 @@ Now we will instantiate an instace of ArtemisFaker by calling the ArtemisFaker m
 
 We call Faker and pass it the arg seed, which is defined as 1000 above. At this point, we now have an instance of our ArtemisFaker module, which runs the Numpy RNG back-end. We have also seeded the system. Any subsequent methods called, will start from that RNG initial state.
 
+#### Techincal Notes
+
+Under-the-hood, there's a little bit going on here. First, the back-end is set to numpy as the first step of execution. Next, the super-class MethodHandler is initiated as a ```super()``` object. We then create a class-variable called ```self.seed```. After, if the seed is not ```None```, ```self._set_seed()``` is called allowing the generator state to be set. Once this process is completed, the base of ArtemisFaker is configured and set.
+
 ### Load the module
 
 We now load in our method to the instance of ArtemisFaker.
