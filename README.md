@@ -55,6 +55,14 @@ We now load in our method to the instance of ArtemisFaker.
 
 This has now loaded in the module to ArtemisFaker. The module is made accesable by the name of the method that is being called. These are stored as a key-value pair in the module. What this means is that, to access the module for generating random numbers, all that must be done is request, by name, the generator method. The engine is no longer needed in the call, as the generator is not simply handled as an ArtemisFaker generator.
 
+#### Techincal Notes
+
+```fake.add_faker(parent, method)``` is a rather involved process. The super-class calls it's method ```super().get_parent(parent, method)```. This method is also rather involved. Before getting into the details, it is important to note that the entire purpose of this method, is to return an object to the ArtemisFaker intance which is callable later on.
+
+Under-the-hood, the method sets the module in ```self.parent```. The control-sequence verifies that the method and the parent are both strings. This senario causes the methods to be lazy-imported. Should this not be the case, and the user has presented a callable method to the ```fake.add_faker(parent, method)``` method, an ```AssertionError``` is triggered. In the catch block, the method is checked to verify that it is not Numpy. If it is, infact Numpy, to avoid overwriting the state of the RNG back-end, Numpy is not imported, and the back-end's instance of Numpy is used to provide the random number generation. Otherwise, the module quickly checked to verify that the requested method is contained in the module. Should this test pass, the module is returned back to the Faker class. 
+
+In the case that this is neither numpy, nor a callable, the class loads the module, and from there checks if the method is contained. Once this is completed, the method then returns the callable to Faker.
+
 ### Generating a random number
 
 Now that we have the system staged, we can generate a random number.
