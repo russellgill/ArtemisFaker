@@ -96,3 +96,17 @@ Here we load in the modules in a loop. We are able to load in all the methods, a
 
 ArtemisFaker has been designed with developer friendliness in mind. We are moving towards a per-line documentation approach. Providing clear, but short explanations of each execution step helps reduce time invested in understanding the code base. Descriptive variable names are also used, with variables and methods being identified by snake_case. Classes and modules are identified with CamelCase. Variable name verbosity is increased proportionally to the distance away from the variable assignment, with only temporary variables (ie loop incrementers) being given single character names. 
 
+### Debug Notes
+
+Occationally in the code you may see a structure like this:
+
+```
+variable = function_call()
+return variable
+```
+
+This structure allows for variable inspections that may not be available in a setup like this:
+
+``` 
+return function_call()
+```
