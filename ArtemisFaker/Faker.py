@@ -48,6 +48,8 @@ class ArtemisFaker(MethodHandler):
         What this does it provide an shim to access
         the RNGs with invariate syntax.
         """
+        if not isinstance(params, list):
+            params = [params]
         if isinstance(method, list):
             if len(method) != 1:
                 raise IndexError("Multiple methods passed")
