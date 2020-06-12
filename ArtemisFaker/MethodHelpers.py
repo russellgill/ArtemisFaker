@@ -60,7 +60,7 @@ class MethodHandler():
         Verify that the method is
         inside the parent.
         """
-        try: # Try
-            getattr(self.parent, self.method) # Check if parent contains child
-        except AttributeError: # Catch an attribute error and elaborate 
-            ImportError("Error: module %s not in %s" %(self.method, self.parent)) # Alert that the method does not exist
+        if hasattr(self.parent, self.method): # Check if parent contains child
+            return True
+        else:
+            raise AttributeError("No method named %s")

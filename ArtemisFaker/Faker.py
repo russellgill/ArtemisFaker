@@ -48,13 +48,18 @@ class ArtemisFaker(MethodHandler):
         What this does it provide an shim to access
         the RNGs with invariate syntax.
         """
+        if isinstance(method, list):
+            if len(method) != 1:
+                raise IndexError("Multiple methods passed")
+            else:
+                method = method[-1]
         try:  # Check if the genrator is inside the hashmap (1)
             # Get it from the hashmap (1)
-            interface = self.are_avilable[method]
+            interface = self.are_avilable[method.lower()]
             # Produce the random value
             return interface.generate_random(params)
 
         except KeyError:  # Catch the error if it is not instantiated
-            print(method)
+            print(method.lower())
             # Raise an error if it is not there.
-            raise KeyError("Faker method not available.")
+            raise KeyError("Faker %s method not available." %method)
