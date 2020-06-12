@@ -20,6 +20,12 @@ from importlib import import_module
 import unittest
 
 
+def get_module(module_name):
+    module = import_module(module_name).Provider()
+    name = module.describe
+    return (module, name)
+
+
 class TestMethod():
 
     def uniform(self, param):
@@ -131,6 +137,18 @@ class FakerUnitTest(unittest.TestCase):
 
         assert(results)  # Assert that the result is True
 
+    def test_custom_with_import(self):
+        provider, method = get_module("TestProvider")
+        faker = Faker.ArtemisFaker(seed=None)
+        faker.add_faker(provider, method)
+        result = faker.fake(method, params=None)
+        assert(result == "TM2")
+
 
 if __name__ == "__main__":
-    unittest.main()
+    #unittest.main()
+    provider, method = get_module("TestProvider")
+    faker = Faker.ArtemisFaker(seed=None)
+    faker.add_faker(provider, method)
+    result = faker.fake(method, params=None)
+    print(result)

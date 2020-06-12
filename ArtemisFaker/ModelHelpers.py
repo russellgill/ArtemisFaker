@@ -67,4 +67,4 @@ class ModelInterface():
         return getattr(self.parent, self.method)(*self.params)
     
     def _fetch_and_return(self):
-        getattr(self.parent, self.method)()
+        return getattr(self.parent, self.method)()
