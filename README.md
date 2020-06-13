@@ -1,5 +1,7 @@
 # ArtemisFaker
 
+This package is a sub-project in the ArtemisAnalytics project, specifically the [Dolos](https://github.com/artemis-analytics/dolos) package. For a picture of how this integrates into the larger ecosystem, check out the main project.
+
 ArtemisFaker is a random number generator wrapper allowing multiple random number generator methods to be accessed from a single instance. Providing access to both Numpy and Scipy engines natively, as well as custom methods, ArtemisFaker allows the end-user to streamline data generation where multiple techniques are used. 
 
 By implementing the Numpy random number generator as the back-end for the system, the end-user is able to configure an initial state for the system, by seeding the entire instance. Any operations which access the Numpy or Scipy engines will be impacted by the seeding. 
