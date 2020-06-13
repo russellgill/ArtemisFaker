@@ -91,7 +91,26 @@ The generators, when loaded into the ArtemisFaker module, are called fakers. We 
 >>> fake.fake('poisson', [0, 0])
 ```
 
-Here we load in the modules in a loop. We are able to load in all the methods, and access them at will using the 
+Here we load in the modules in a loop. We are able to load in all the methods, and access them at will using the method's name.
+
+## Writing Your Own Generators
+
+ArtemisFaker allows you to use some out-of-the-box generators, as well as expand the system by allowing you to include custom generators. These custom generators follow a specific format which allows them to be parsed by the parent framework, Artemis, that this module was developed for. The format is pretty straight-forward, and requires the following boiler-plate code:
+
+```
+class Provider:
+  def __init__(self):
+    self.name = "provider_method"
+  
+  @property
+  def describe(self):
+    return self.name
+  
+  def provider_method(self, params=None):
+    <Some Code Here>
+    return results
+```
+
 ## Project Upkeep Considerations
 
 ArtemisFaker has been designed with developer friendliness in mind. We are moving towards a per-line documentation approach. Providing clear, but short explanations of each execution step helps reduce time invested in understanding the code base. Descriptive variable names are also used, with variables and methods being identified by snake_case. Classes and modules are identified with CamelCase. Variable name verbosity is increased proportionally to the distance away from the variable assignment, with only temporary variables (ie loop incrementers) being given single character names. 
