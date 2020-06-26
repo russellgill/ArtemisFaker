@@ -64,4 +64,4 @@ class ArtemisFaker(MethodHandler):
         except KeyError:  # Catch the error if it is not instantiated
             print(method.lower())
             # Raise an error if it is not there.
-            raise KeyError("Faker %s method not available." % method)
+            raise KeyError("Faker %s method not available." %method)

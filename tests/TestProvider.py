@@ -6,5 +6,5 @@ class Provider():
     def describe(self):
         return self.name
     
-    def name_gen(self):
+    def name_gen(self, param):
         return "TM2"

@@ -139,6 +139,7 @@ class FakerUnitTest(unittest.TestCase):
 
     def test_custom_with_import(self):
         provider, method = get_module("TestProvider")
+        print(provider, method)
         faker = Faker.ArtemisFaker(seed=None)
         faker.add_faker(provider, method)
         result = faker.fake(method, params=None)
@@ -146,9 +147,4 @@ class FakerUnitTest(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    #unittest.main()
-    provider, method = get_module("TestProvider")
-    faker = Faker.ArtemisFaker(seed=None)
-    faker.add_faker(provider, method)
-    result = faker.fake(method, params=None)
-    print(result)
+    unittest.main()
